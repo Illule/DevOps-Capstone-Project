@@ -17,7 +17,7 @@
       "type": "row"
     },
     {
-      "datasource": { "type": "prometheus", "uid": "Prometheus" },
+      "datasource": { "type": "prometheus", "uid": "prometheus" },
       "fieldConfig": {
         "defaults": {
           "color": { "mode": "palette-classic" },
@@ -40,7 +40,7 @@
       ]
     },
     {
-      "datasource": { "type": "prometheus", "uid": "Prometheus" },
+      "datasource": { "type": "prometheus", "uid": "prometheus" },
       "fieldConfig": {
         "defaults": {
           "color": { "mode": "palette-classic" },
@@ -70,7 +70,7 @@
       "type": "row"
     },
     {
-      "datasource": { "type": "prometheus", "uid": "Prometheus" },
+      "datasource": { "type": "prometheus", "uid": "prometheus" },
       "fieldConfig": {
         "defaults": {
           "color": { "mode": "palette-classic" },
@@ -103,7 +103,7 @@
       ]
     },
     {
-      "datasource": { "type": "prometheus", "uid": "Prometheus" },
+      "datasource": { "type": "prometheus", "uid": "prometheus" },
       "fieldConfig": {
         "defaults": {
           "color": { "mode": "palette-classic" },
