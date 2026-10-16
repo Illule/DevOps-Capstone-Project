@@ -7,7 +7,7 @@ namespace: bookshelf-prod
 frontend:
   replicaCount: 3
   image:
-    tag: "cd536e194c9292d298bdb018f419f9ee7031fb4d"
+    tag: "71492372bb0ad6f11df363ac5d3ee06f11ea67bf"
   resources:
     requests:
       cpu: 150m
@@ -24,7 +24,7 @@ frontend:
 backend:
   replicaCount: 3
   image:
-    tag: "cd536e194c9292d298bdb018f419f9ee7031fb4d"
+    tag: "71492372bb0ad6f11df363ac5d3ee06f11ea67bf"
   resources:
     requests:
       cpu: 250m
