@@ -600,25 +600,3 @@ terraform destroy -auto-approve
 | **Bonus: GitOps** | + | Argo CD Continuous Sync | `gitops/argocd-app.yaml` |
 
 ---
-
-## 27. Evaluator Defense & Oral Exam Q&A Guide
-
-### Q1: Why use multi-stage Docker builds for the React frontend?
-> **Answer:** A Node.js build environment includes heavy build tools and `node_modules` (~400MB+). Multi-stage builds discard the Node environment after compiling static assets and transfer only minified HTML/JS/CSS to a lightweight Nginx Alpine image, resulting in a tiny (< 28MB), secure production container with a minimal attack surface.
-
-### Q2: How does Argo CD detect and resolve configuration drift?
-> **Answer:** Argo CD continuously compares the live cluster state (via the Kubernetes API server) against the target manifests in Git. If someone manually modifies the cluster (e.g. `kubectl scale`), Argo CD flags the application as `OutOfSync`. With `selfHeal: true`, it automatically reapplies the Git manifests to force the cluster back into alignment with the source of truth.
-
-### Q3: Why use SQLite in-memory for testing instead of testing against the PostgreSQL container?
-> **Answer:** Testing against an in-memory SQLite database provides complete isolation, executes with zero network latency, prevents test pollution, and allows unit and integration test suites to run in CI without spinning up external database infrastructure.
-
-### Q4: How does the Kubernetes Liveness Probe differ from the Readiness Probe?
-> **Answer:** 
-> - **Liveness Probe:** Determines if the container process is alive. If it fails, Kubernetes kills the pod and restarts a fresh container.
-> - **Readiness Probe:** Determines if the container is ready to accept incoming traffic (e.g., database connection established). If it fails, Kubernetes removes the pod from the Service endpoints so users never experience connection dropouts.
-
----
-
-## 28. License & Acknowledgments
-
-Developed as the Final DevOps Capstone Project. Built according to cloud-native best practices and production infrastructure design principles.
