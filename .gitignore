@@ -60,3 +60,5 @@ terraform/*.auto.tfvars
 .DS_Store
 Thumbs.db
 desktop.ini
+
+Video.mp4

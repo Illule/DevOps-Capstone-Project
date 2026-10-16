@@ -3,6 +3,9 @@
 > **A Complete, Production-Ready Personal Reading Tracker & Review Platform**  
 > Built with **React 18 + FastAPI + PostgreSQL**, automated with **GitHub Actions CI/CD**, secured with **DevSecOps gates**, provisioned on **AWS EKS via Terraform**, orchestrated with **Kubernetes & Helm**, continuously delivered using **Argo CD GitOps**, and monitored with **Prometheus & Grafana**.
 
+[![Watch Demo Video](https://img.shields.io/badge/🎥%20Demo%20Video-Google%20Drive-4285F4?style=for-the-badge&logo=googledrive&logoColor=white)](https://drive.google.com/file/d/16rHGXLguOo2jii7sGrnrqSR2_G28JFTJ/view?usp=drive_link)
+[![Presentation](https://img.shields.io/badge/📊%20Slides-PowerPoint%20Deck-D24726?style=for-the-badge&logo=microsoftpowerpoint&logoColor=white)](BookShelf_DevOps_Capstone_Presentation.pptx)
+
 ---
 
 ## 📑 Table of Contents
