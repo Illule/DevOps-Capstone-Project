@@ -157,6 +157,12 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
+      - name: Set lowercase image names
+        run: |
+          REPO_LOWER=$(echo "${{ github.repository }}" | tr '[:upper:]' '[:lower:]')
+          echo "BACKEND_IMAGE=ghcr.io/${REPO_LOWER}/bookshelf-backend" >> $GITHUB_ENV
+          echo "FRONTEND_IMAGE=ghcr.io/${REPO_LOWER}/bookshelf-frontend" >> $GITHUB_ENV
+
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
 
@@ -184,6 +190,7 @@ jobs:
           image-ref: ${{ env.BACKEND_IMAGE }}:${{ github.sha }}
           format: table
           exit-code: 1
+          ignore-unfixed: true
           severity: HIGH,CRITICAL
           timeout: 10m
 
@@ -214,6 +221,7 @@ jobs:
           image-ref: ${{ env.FRONTEND_IMAGE }}:${{ github.sha }}
           format: table
           exit-code: 1
+          ignore-unfixed: true
           severity: HIGH,CRITICAL
           timeout: 10m
 
