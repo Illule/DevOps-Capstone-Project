@@ -12,6 +12,7 @@ ENV PYTHONDONTWRITEBYTECODE=1 \
 
 # Install system dependencies required by psycopg2-binary
 RUN apt-get update && \
+    apt-get upgrade -y && \
     apt-get install -y --no-install-recommends curl && \
     rm -rf /var/lib/apt/lists/*
 
@@ -21,10 +22,11 @@ RUN groupadd --gid 1000 appuser && \
 
 WORKDIR /app
 
-# Install Python dependencies (cached layer)
+# Install Python dependencies (cached layer) and remove build tools to eliminate CVEs
 COPY requirements.txt .
-RUN pip install --no-cache-dir --upgrade pip && \
-    pip install --no-cache-dir -r requirements.txt
+RUN pip install --no-cache-dir --upgrade pip setuptools wheel && \
+    pip install --no-cache-dir -r requirements.txt && \
+    pip uninstall -y pip setuptools wheel
 
 # Copy application code
 COPY . .

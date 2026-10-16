@@ -20,6 +20,9 @@ RUN npm run build
 # ---- Stage 2: Serve ----
 FROM nginx:1.27-alpine
 
+# Upgrade packages to apply latest security patches
+RUN apk update && apk upgrade --no-cache
+
 # Remove default nginx config
 RUN rm /etc/nginx/conf.d/default.conf
 
