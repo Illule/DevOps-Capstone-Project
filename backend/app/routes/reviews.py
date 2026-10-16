@@ -26,11 +26,18 @@ def list_reviews(book_id: int, db: Session = Depends(get_db)):
     if not book:
         raise HTTPException(status_code=404, detail=f"Book with id {book_id} not found")
 
-    return db.query(Review).filter(Review.book_id == book_id).order_by(Review.created_at.desc()).all()
+    return (
+        db.query(Review)
+        .filter(Review.book_id == book_id)
+        .order_by(Review.created_at.desc())
+        .all()
+    )
 
 
 @router.post("/books/{book_id}/reviews", response_model=ReviewResponse, status_code=201)
-def create_review(book_id: int, review_data: ReviewCreate, db: Session = Depends(get_db)):
+def create_review(
+    book_id: int, review_data: ReviewCreate, db: Session = Depends(get_db)
+):
     """
     Add a review to a book.
 
@@ -57,7 +64,9 @@ def delete_review(review_id: int, db: Session = Depends(get_db)):
     """
     review = db.query(Review).filter(Review.id == review_id).first()
     if not review:
-        raise HTTPException(status_code=404, detail=f"Review with id {review_id} not found")
+        raise HTTPException(
+            status_code=404, detail=f"Review with id {review_id} not found"
+        )
 
     db.delete(review)
     db.commit()

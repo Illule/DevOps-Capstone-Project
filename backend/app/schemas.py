@@ -23,9 +23,7 @@ from app.models import ReadingStatus
 class ReviewCreate(BaseModel):
     """Schema for creating a new review."""
 
-    reviewer_name: str = Field(
-        ..., min_length=1, max_length=100, examples=["Alice"]
-    )
+    reviewer_name: str = Field(..., min_length=1, max_length=100, examples=["Alice"])
     rating: int = Field(..., ge=1, le=5, examples=[4])
     comment: str | None = Field(None, max_length=2000, examples=["Great read!"])
 
@@ -57,12 +55,8 @@ class BookCreate(BaseModel):
     author: str = Field(
         ..., min_length=1, max_length=255, examples=["David Thomas, Andrew Hunt"]
     )
-    isbn: str | None = Field(
-        None, max_length=13, examples=["9780135957059"]
-    )
-    status: ReadingStatus = Field(
-        ReadingStatus.WANT_TO_READ, examples=["want_to_read"]
-    )
+    isbn: str | None = Field(None, max_length=13, examples=["9780135957059"])
+    status: ReadingStatus = Field(ReadingStatus.WANT_TO_READ, examples=["want_to_read"])
     page_count: int | None = Field(None, ge=1, examples=[352])
     description: str | None = Field(
         None, max_length=5000, examples=["A classic book on software craftsmanship."]

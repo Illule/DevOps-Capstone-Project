@@ -69,7 +69,9 @@ class Book(Base):
     )
 
     def __repr__(self) -> str:
-        return f"<Book(id={self.id}, title='{self.title}', status='{self.status.value}')>"
+        return (
+            f"<Book(id={self.id}, title='{self.title}', status='{self.status.value}')>"
+        )
 
 
 class Review(Base):

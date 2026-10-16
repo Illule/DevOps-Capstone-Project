@@ -27,9 +27,7 @@ def get_stats(db: Session = Depends(get_db)):
 
     # Count books by status
     status_counts = (
-        db.query(Book.status, func.count(Book.id))
-        .group_by(Book.status)
-        .all()
+        db.query(Book.status, func.count(Book.id)).group_by(Book.status).all()
     )
     status_map = {status: count for status, count in status_counts}
 

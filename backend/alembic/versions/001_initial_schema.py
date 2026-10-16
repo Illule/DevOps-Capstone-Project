@@ -30,7 +30,9 @@ def upgrade() -> None:
         sa.Column("title", sa.String(length=255), nullable=False),
         sa.Column("author", sa.String(length=255), nullable=False),
         sa.Column("isbn", sa.String(length=13), nullable=True),
-        sa.Column("status", reading_status_enum, nullable=False, server_default="want_to_read"),
+        sa.Column(
+            "status", reading_status_enum, nullable=False, server_default="want_to_read"
+        ),
         sa.Column("page_count", sa.Integer(), nullable=True),
         sa.Column("description", sa.Text(), nullable=True),
         sa.Column(

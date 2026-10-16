@@ -25,8 +25,8 @@ app = FastAPI(
         "Manage your book collection, track reading progress, "
         "and write reviews."
     ),
-    docs_url="/docs",       # Swagger UI
-    redoc_url="/redoc",     # ReDoc alternative
+    docs_url="/docs",  # Swagger UI
+    redoc_url="/redoc",  # ReDoc alternative
     openapi_url="/openapi.json",
 )
 
