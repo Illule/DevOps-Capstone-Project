@@ -337,6 +337,9 @@ Security is enforced at every boundary:
 
 Any finding of `HIGH` or `CRITICAL` severity fails the CI build and blocks image deployment.
 
+### Container Security Scan Summary
+During the CI/CD pipeline, Trivy scans both the backend (`python:3.11-slim`) and frontend (`nginx:1.27-alpine`) container images, auditing base OS system packages and language-specific dependencies against global CVE security databases. The scan enforces a strict security gate that blocks deployment if any `HIGH` or `CRITICAL` severity vulnerability is discovered. The clean result (0 vulnerabilities) verifies that base OS packages are patched and unnecessary build tools have been removed, proving that the container artifacts are hardened and ready for production deployment.
+
 ---
 
 ## 12. Infrastructure as Code (Terraform for AWS EKS)

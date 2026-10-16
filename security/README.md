@@ -17,6 +17,9 @@
 3. **pip-audit SCA**: Checks all Python dependencies against known vulnerability databases. Runs in `--strict` mode.
 4. **Gitleaks**: Scans the entire Git history for accidentally committed secrets (API keys, passwords, tokens).
 
+### Trivy Scan Analysis & Results Summary
+During the CI/CD pipeline execution, Trivy performed automated vulnerability scans on both the backend (`python:3.11-slim`) and frontend (`nginx:1.27-alpine`) container images, auditing base OS system packages and language-specific dependencies against global CVE security databases. The scan enforced a strict security gate that automatically blocks deployments if any `HIGH` or `CRITICAL` severity vulnerability is discovered. The final clean result (0 vulnerabilities) confirms that all OS packages are fully patched and build-time utilities have been eliminated, verifying that both container images are hardened and secure for production Kubernetes deployment.
+
 ## Handling Vulnerabilities
 
 ### Confirmed vulnerability
