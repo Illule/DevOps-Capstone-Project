@@ -68,7 +68,7 @@ metadata:
     app.kubernetes.io/name: bookshelf
     app.kubernetes.io/component: frontend
 spec:
-  type: ClusterIP
+  type: LoadBalancer
   ports:
     - port: 80
       targetPort: http
