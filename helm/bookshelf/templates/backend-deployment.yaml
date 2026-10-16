@@ -40,6 +40,8 @@ spec:
                 secretKeyRef:
                   name: {{ include "bookshelf.fullname" . }}-secret
                   key: DB_PASSWORD
+            - name: DATABASE_URL
+              value: "postgresql://{{ .Values.database.user }}:{{ .Values.database.password }}@{{ .Values.database.host }}:{{ .Values.database.port }}/{{ .Values.database.name }}"
           livenessProbe:
             httpGet:
               path: /api/health
@@ -61,4 +63,5 @@ spec:
           securityContext:
             allowPrivilegeEscalation: false
             runAsNonRoot: true
+            runAsUser: 1000
             readOnlyRootFilesystem: false

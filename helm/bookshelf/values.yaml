@@ -56,8 +56,7 @@ database:
   port: 5432
   name: bookshelf
   user: bookshelf
-  # password is set via secret (not stored in values)
-  password: ""
+  password: "bookshelf_secure_password_2026"
 
 # --- Ingress ---
 ingress:
