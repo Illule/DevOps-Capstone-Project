@@ -1,0 +1,50 @@
+# ===================================================
+# BookShelf Helm Values — Production Environment
+# ===================================================
+
+namespace: bookshelf-prod
+
+frontend:
+  replicaCount: 3
+  image:
+    tag: "prod"
+  resources:
+    requests:
+      cpu: 150m
+      memory: 128Mi
+    limits:
+      cpu: 500m
+      memory: 256Mi
+  hpa:
+    enabled: true
+    minReplicas: 3
+    maxReplicas: 10
+    targetCPUUtilization: 65
+
+backend:
+  replicaCount: 3
+  image:
+    tag: "prod"
+  resources:
+    requests:
+      cpu: 250m
+      memory: 256Mi
+    limits:
+      cpu: 1000m
+      memory: 512Mi
+  hpa:
+    enabled: true
+    minReplicas: 3
+    maxReplicas: 10
+    targetCPUUtilization: 65
+
+ingress:
+  annotations:
+    kubernetes.io/ingress.class: alb
+    alb.ingress.kubernetes.io/scheme: internet-facing
+    alb.ingress.kubernetes.io/target-type: ip
+    alb.ingress.kubernetes.io/listen-ports: '[{"HTTP": 80}, {"HTTPS": 443}]'
+
+config:
+  debug: "false"
+  corsOrigins: "https://bookshelf.example.com"

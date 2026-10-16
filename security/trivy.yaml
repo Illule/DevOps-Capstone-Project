@@ -1,0 +1,25 @@
+# ===================================================
+# Trivy Vulnerability Scanner Configuration
+# ===================================================
+
+# Exit code when vulnerabilities are found
+exit-code: 1
+
+# Severity levels that will trigger a failure
+severity:
+  - HIGH
+  - CRITICAL
+
+# Ignore unfixed vulnerabilities if patches are unavailable upstream
+ignore-unfixed: true
+
+# Vulnerability types to scan
+vuln-type:
+  - os
+  - library
+
+# Timeout for remote database sync
+timeout: 10m
+
+# Formatting
+format: table

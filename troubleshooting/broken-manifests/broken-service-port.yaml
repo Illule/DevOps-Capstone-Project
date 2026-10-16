@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: bookshelf-backend-broken-port
+  namespace: bookshelf
+spec:
+  type: ClusterIP
+  ports:
+    - port: 8000
+      targetPort: 9999 # <-- BUG: Container listens on 8000, causing 502/Connection Refused!
+      protocol: TCP
+      name: http
+  selector:
+    app.kubernetes.io/name: bookshelf
+    app.kubernetes.io/component: backend

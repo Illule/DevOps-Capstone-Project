@@ -1,0 +1,77 @@
+# ===================================================
+# BookShelf Helm Chart — Default Values
+# ===================================================
+
+namespace: bookshelf
+
+# --- Frontend ---
+frontend:
+  replicaCount: 2
+  image:
+    repository: ghcr.io/OWNER/REPO/bookshelf-frontend
+    tag: "latest"
+    pullPolicy: IfNotPresent
+  service:
+    type: ClusterIP
+    port: 80
+  resources:
+    requests:
+      cpu: 100m
+      memory: 64Mi
+    limits:
+      cpu: 250m
+      memory: 128Mi
+  hpa:
+    enabled: true
+    minReplicas: 2
+    maxReplicas: 5
+    targetCPUUtilization: 70
+
+# --- Backend ---
+backend:
+  replicaCount: 2
+  image:
+    repository: ghcr.io/OWNER/REPO/bookshelf-backend
+    tag: "latest"
+    pullPolicy: IfNotPresent
+  service:
+    type: ClusterIP
+    port: 8000
+  resources:
+    requests:
+      cpu: 150m
+      memory: 128Mi
+    limits:
+      cpu: 500m
+      memory: 256Mi
+  hpa:
+    enabled: true
+    minReplicas: 2
+    maxReplicas: 5
+    targetCPUUtilization: 70
+
+# --- Database ---
+database:
+  host: bookshelf-db
+  port: 5432
+  name: bookshelf
+  user: bookshelf
+  # password is set via secret (not stored in values)
+  password: ""
+
+# --- Ingress ---
+ingress:
+  enabled: true
+  className: alb
+  annotations:
+    kubernetes.io/ingress.class: alb
+    alb.ingress.kubernetes.io/scheme: internet-facing
+    alb.ingress.kubernetes.io/target-type: ip
+  host: ""
+
+# --- ConfigMap ---
+config:
+  appName: BookShelf
+  appVersion: "1.0.0"
+  debug: "false"
+  corsOrigins: "*"

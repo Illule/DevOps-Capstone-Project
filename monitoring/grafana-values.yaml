@@ -1,0 +1,49 @@
+# ===================================================
+# Grafana Helm Chart Values
+# ===================================================
+
+adminPassword: "bookshelf_grafana_admin"
+
+persistence:
+  enabled: true
+  size: 5Gi
+
+service:
+  type: ClusterIP
+  port: 80
+  targetPort: 3000
+
+# Auto-configured Prometheus datasource
+datasources:
+  datasources.yaml:
+    apiVersion: 1
+    datasources:
+      - name: Prometheus
+        type: prometheus
+        url: http://bookshelf-monitoring-prometheus:9090
+        access: proxy
+        isDefault: true
+        jsonData:
+          timeInterval: 15s
+
+# Dashboard provider loading custom dashboards from ConfigMaps
+dashboardProviders:
+  dashboardproviders.yaml:
+    apiVersion: 1
+    providers:
+      - name: 'default'
+        orgId: 1
+        folder: ''
+        type: file
+        disableDeletion: false
+        editable: true
+        options:
+          path: /var/lib/grafana/dashboards/default
+
+resources:
+  requests:
+    cpu: 100m
+    memory: 128Mi
+  limits:
+    cpu: 250m
+    memory: 256Mi

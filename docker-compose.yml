@@ -1,0 +1,71 @@
+# ===================================================
+# BookShelf — Docker Compose (Local Development)
+# ===================================================
+# Starts the full stack: PostgreSQL + Backend + Frontend
+#
+# Usage:
+#   docker compose up --build        # Build and start all services
+#   docker compose down              # Stop all services
+#   docker compose down -v           # Stop and remove volumes (reset DB)
+#   docker compose logs backend -f   # Follow backend logs
+
+services:
+  # --- PostgreSQL Database ---
+  db:
+    image: postgres:16-alpine
+    container_name: bookshelf-db
+    environment:
+      POSTGRES_USER: bookshelf
+      POSTGRES_PASSWORD: bookshelf
+      POSTGRES_DB: bookshelf
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U bookshelf"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+    restart: unless-stopped
+
+  # --- FastAPI Backend ---
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: bookshelf-backend
+    environment:
+      DATABASE_URL: postgresql://bookshelf:bookshelf@db:5432/bookshelf
+      APP_NAME: BookShelf
+      DEBUG: "true"
+      CORS_ORIGINS: "http://localhost:3000,http://localhost:5173"
+    ports:
+      - "8000:8000"
+    depends_on:
+      db:
+        condition: service_healthy
+    command: >
+      sh -c "
+        echo 'Running database migrations...' &&
+        alembic upgrade head &&
+        echo 'Starting server...' &&
+        uvicorn app.main:app --host 0.0.0.0 --port 8000 --reload
+      "
+    restart: unless-stopped
+
+  # --- React Frontend (Nginx) ---
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    container_name: bookshelf-frontend
+    ports:
+      - "3000:80"
+    depends_on:
+      - backend
+    restart: unless-stopped
+
+volumes:
+  postgres_data:
+    name: bookshelf_postgres_data

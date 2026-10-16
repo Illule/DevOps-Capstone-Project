@@ -1,0 +1,37 @@
+# ===================================================
+# BookShelf Helm Values — Development Environment
+# ===================================================
+
+namespace: bookshelf-dev
+
+frontend:
+  replicaCount: 1
+  image:
+    tag: "dev"
+  resources:
+    requests:
+      cpu: 50m
+      memory: 32Mi
+    limits:
+      cpu: 150m
+      memory: 64Mi
+  hpa:
+    enabled: false
+
+backend:
+  replicaCount: 1
+  image:
+    tag: "dev"
+  resources:
+    requests:
+      cpu: 100m
+      memory: 64Mi
+    limits:
+      cpu: 250m
+      memory: 128Mi
+  hpa:
+    enabled: false
+
+config:
+  debug: "true"
+  corsOrigins: "*"

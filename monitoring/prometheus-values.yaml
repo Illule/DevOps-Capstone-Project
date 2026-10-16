@@ -1,0 +1,84 @@
+# ===================================================
+# kube-prometheus-stack Helm Chart Values
+# ===================================================
+# Deploys Prometheus, Alertmanager, Node Exporter, and kube-state-metrics
+
+fullnameOverride: "bookshelf-monitoring"
+
+prometheus:
+  prometheusSpec:
+    serviceAccountName: "bookshelf-monitoring-prometheus"
+    scrapeInterval: "15s"
+    evaluationInterval: "15s"
+    retention: "7d"
+    
+    # Discovery configuration: auto-discover BookShelf pods
+    serviceMonitorSelectorNilUsesHelmValues: false
+    serviceMonitorSelector: {}
+    podMonitorSelectorNilUsesHelmValues: false
+    podMonitorSelector: {}
+
+    # Scrape configuration targeting BookShelf backend API directly
+    additionalScrapeConfigs:
+      - job_name: "bookshelf-backend"
+        metrics_path: "/api/metrics"
+        scrape_interval: "10s"
+        scrape_timeout: "5s"
+        kubernetes_sd_configs:
+          - role: pod
+            namespaces:
+              names:
+                - bookshelf
+        relabel_configs:
+          - source_labels: [__meta_kubernetes_pod_label_app_kubernetes_io_component]
+            action: keep
+            regex: backend
+          - source_labels: [__meta_kubernetes_pod_container_port_number]
+            action: keep
+            regex: "8000"
+          - source_labels: [__meta_kubernetes_pod_name]
+            target_label: pod
+          - source_labels: [__meta_kubernetes_namespace]
+            target_label: namespace
+
+    # Resource requests and limits
+    resources:
+      requests:
+        cpu: 200m
+        memory: 512Mi
+      limits:
+        cpu: 500m
+        memory: 1Gi
+
+# Alerting rules
+additionalPrometheusRulesMap:
+  bookshelf-rules:
+    groups:
+      - name: bookshelf.alerts
+        rules:
+          - alert: BackendHighHttp5xxRate
+            expr: sum(rate(http_requests_total{status=~"5.."}[2m])) / sum(rate(http_requests_total[2m])) * 100 > 5
+            for: 1m
+            labels:
+              severity: critical
+            annotations:
+              summary: "BookShelf backend HTTP 5xx error rate > 5%"
+              description: "High error rate detected on backend: {{ $value | printf \"%.2f\" }}% errors."
+
+          - alert: BackendHighLatency
+            expr: histogram_quantile(0.95, sum(rate(http_request_duration_seconds_bucket[5m])) by (le)) > 0.5
+            for: 2m
+            labels:
+              severity: warning
+            annotations:
+              summary: "BookShelf backend 95th percentile latency > 500ms"
+              description: "P95 latency is currently {{ $value | printf \"%.2f\" }}s."
+
+          - alert: BackendPodCrashLooping
+            expr: rate(kube_pod_container_status_restarts_total{namespace="bookshelf", container="backend"}[5m]) * 60 > 2
+            for: 1m
+            labels:
+              severity: critical
+            annotations:
+              summary: "BookShelf backend pod is restarting frequently"
+              description: "Pod {{ $labels.pod }} restarted more than twice in 5 minutes."
