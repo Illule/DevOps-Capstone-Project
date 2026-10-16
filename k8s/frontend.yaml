@@ -25,7 +25,7 @@ spec:
     spec:
       containers:
         - name: frontend
-          image: ghcr.io/armandevops/bookshelf-frontend:latest
+          image: ghcr.io/illule/devops-capstone-project/bookshelf-frontend:latest
           imagePullPolicy: IfNotPresent
           ports:
             - name: http
